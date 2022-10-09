@@ -18,7 +18,7 @@ const CheckListDate = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    retrieveChecklists()
+    retrieveChecklists();
   }, []);
 
   const handleCancel = () => {
@@ -37,7 +37,7 @@ const CheckListDate = () => {
           .catch((e) => {
             console.log(e);
           });
-      }, 1000);
+      }, 500);
     }
   };
 
@@ -45,7 +45,6 @@ const CheckListDate = () => {
     ChecklistDataService.get(id)
       .then((response) => {
         setChecklist(response.data);
-        console.log(response.data);
         setIsModalOpen(true);
       })
       .catch((e) => {
@@ -65,7 +64,7 @@ const CheckListDate = () => {
           .then((response) => {
             console.log(response.data);
             message.success("ลบรายการสำเร็จ");
-            retrieveChecklists()
+            retrieveChecklists();
           })
           .catch((e) => {
             console.log(e);
@@ -106,7 +105,7 @@ const CheckListDate = () => {
               className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
             >
               <td className="text-sm py-4 px-6 whitespace-nowrap">
-                {index+1}
+                {index + 1}
               </td>
               <td className="text-sm py-4 px-6 whitespace-nowrap">
                 {checklist.createdAt === null
@@ -182,7 +181,12 @@ const CheckListDate = () => {
       </div>
 
       <Modal
-        title={"ข้อมูลการตรวจเช็ค " + "(" + moment(checklist.createdAt).format("LL") + ")"}
+        title={
+          "ข้อมูลการตรวจเช็ค " +
+          "(" +
+          moment(checklist.createdAt).format("LL") +
+          ")"
+        }
         open={isModalOpen}
         onCancel={handleCancel}
         footer={[
@@ -190,10 +194,10 @@ const CheckListDate = () => {
             Cancel
           </Button>,
         ]}
-        width={600}
+        width={1000}
       >
         <div className="">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <div className="flex justify-between">
                 <p>fan_coil_filter</p>
@@ -231,6 +235,8 @@ const CheckListDate = () => {
                 <p>reagent_pipe_system</p>
                 <Checkbox checked={checklist.reagent_pipe_system}></Checkbox>
               </div>
+            </div>
+            <div>
               <div className="flex justify-between">
                 <p>insulation_air_duct</p>
                 <Checkbox checked={checklist.insulation_air_duct}></Checkbox>
@@ -249,14 +255,12 @@ const CheckListDate = () => {
               </div>
               <div className="flex justify-between">
                 <p>voltage</p>
-                <p>1.1</p>
+                <p>{checklist.voltage}</p>
               </div>
               <div className="flex justify-between">
                 <p>ampere</p>
-                <p>1.1</p>
+                <p>{checklist.ampere}</p>
               </div>
-            </div>
-            <div>
               <div className="flex justify-between">
                 <p>oil_pressure</p>
                 <Checkbox checked={checklist.oil_pressure}></Checkbox>
@@ -269,6 +273,8 @@ const CheckListDate = () => {
                 <p>drip_tray</p>
                 <Checkbox checked={checklist.drip_tray}></Checkbox>
               </div>
+            </div>
+            <div>
               <div className="flex justify-between">
                 <p>sewer</p>
                 <Checkbox checked={checklist.sewer}></Checkbox>

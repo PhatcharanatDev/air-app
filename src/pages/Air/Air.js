@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// Component
-import AirPagination from "../../components/air/AirPagination";
-// import AirTable from "../../components/air/AirTable";
-
 // Service
 import AirDataService from "../../services/air.service";
 
@@ -202,7 +198,6 @@ const Air = () => {
         )}
       </div>
 
-      <AirPagination />
     </div>
   );
 };

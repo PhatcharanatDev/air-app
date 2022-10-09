@@ -1,7 +1,8 @@
 // import AirForm from "../../components/air/AirForm";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { message, Select } from "antd";
 import AirDataService from "../../services/air.service";
+import PlaceDataService from "../../services/place.service";
 const { Option } = Select;
 
 const AirCreate = () => {
@@ -14,6 +15,21 @@ const AirCreate = () => {
   };
 
   const [air, setAir] = useState(initialAirState);
+  const [places, setPlaces] = useState([]);
+
+  useEffect(() => {
+    retrievePlaces();
+  }, []);
+
+  const retrievePlaces = () => {
+    PlaceDataService.getAll()
+      .then((response) => {
+        setPlaces(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   // Set initialAirState
   const handleInputChange = (event) => {
@@ -28,8 +44,6 @@ const AirCreate = () => {
   const saveAir = () => {
     const { brand, model, btu, fla, placeId } = air;
 
-    console.log(air);
-
     if (!brand || !model || !btu || !fla || !placeId) {
       message.warning("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
@@ -38,7 +52,6 @@ const AirCreate = () => {
     AirDataService.create({ brand, model, btu, fla, placeId })
       .then((response) => {
         setAir(initialAirState);
-        console.log(response.data);
         message.success("บันทึกข้อมูลสำเร็จ");
       })
       .catch((e) => {
@@ -148,10 +161,9 @@ const AirCreate = () => {
                 value={air.placeId}
                 onChange={handleSelectChange}
               >
-                <Option value="1">อาคาร 20 | ชั้น 1 | ห้อง 101</Option>
-                <Option value="2">อาคาร 20 | ชั้น 2 | ห้อง 201</Option>
-                <Option value="3">อาคาร 20 | ชั้น 2 | ห้อง 202</Option>
-                <Option value="4">อาคาร 20 | ชั้น 2 | ห้อง 203</Option>
+                {places.map((place, index) => (
+                  <Option key={index} value={place.id}>{place.name}</Option>
+                ))}
               </Select>
             </div>
           </div>
