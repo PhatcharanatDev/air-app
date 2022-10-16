@@ -1,47 +1,34 @@
-import React, { useState } from "react";
-import { message, Select } from "antd";
-import AirDataService from "../../services/air.service";
+import React, { useState, useEffect } from "react";
+import PlaceDataService from "../../services/place.service";
+import { Select } from "antd";
 const { Option } = Select;
 
-const AirForm = () => {
-  const initialAirState = {
-    brand: "",
-    model: "",
-    btu: "",
-    fla: "",
-    placeId: "",
-  };
+const AirForm = ({ onSaveAir, onAirDataChange , air }) => {
 
-  const [air, setAir] = useState(initialAirState);
+  const [places, setPlaces] = useState([]);
 
-  // Set initialAirState
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setAir({ ...air, [name]: value });
-  };
+  useEffect(() => {
+    retrievePlaces();
+  }, []);
 
-  const handleSelectChange = (value, event) => {
-    setAir({ ...air, ["placeId"]: value });
-  };
-
-  const saveAir = () => {
-    const { brand, model, btu, fla, placeId } = air;
-
-    console.log(air);
-
-    if (!brand || !model || !btu || !fla || !placeId) {
-      message.warning("กรุณากรอกข้อมูลให้ครบถ้วน");
-      return;
-    }
-
-    AirDataService.create({ brand, model, btu, fla, placeId })
+  const retrievePlaces = () => {
+    PlaceDataService.getAll()
       .then((response) => {
-        setAir(initialAirState);
-        console.log(response.data);
+        setPlaces(response.data);
       })
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  // Set initialAirState
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    onAirDataChange({ ...air, [name]: value });
+  };
+
+  const handleSelectChange = (value) => {
+    onAirDataChange({ ...air, placeId: value });
   };
 
   return (
@@ -129,27 +116,29 @@ const AirForm = () => {
             >
               เลือกสถานที่
             </label>
-            <Select
-              allowClear
-              showSearch
-              placeholder="อาคาร 00 | ชั้น 0 | ห้อง 000"
-              optionFilterProp="children"
-              filterOption={(input, option) => option.children.includes(input)}
-              className="w-full"
-              onChange={handleSelectChange}
-            >
-              <Option value="1">อาคาร 20 | ชั้น 1 | ห้อง 101</Option>
-              <Option value="2">อาคาร 20 | ชั้น 2 | ห้อง 201</Option>
-              <Option value="3">อาคาร 20 | ชั้น 2 | ห้อง 202</Option>
-              <Option value="4">อาคาร 20 | ชั้น 2 | ห้อง 203</Option>
-            </Select>
+              <Select
+                allowClear
+                showSearch
+                placeholder="อาคาร 00 | ชั้น 0 | ห้อง 000"
+                optionFilterProp="children"
+                filterOption={(input, option) => option.children.includes(input)}
+                className="w-full"
+                value={air.placeId}
+                onChange={handleSelectChange}
+              >
+                {places.map((place, index) => (
+                  <Option key={index} value={place.id}>
+                    {place.name}
+                  </Option>
+                ))}
+              </Select>
           </div>
         </div>
       </form>
       <div className="flex justify-center md:justify-end mt-5">
         <button
           type="button"
-          onClick={saveAir}
+          onClick={() => onSaveAir()}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-base px-3 py-1.5  focus:outline-none "
         >
           บันทึกข้อมูล
