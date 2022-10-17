@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { BiEdit, BiListUl, BiTrash } from "react-icons/bi";
 import moment from "moment";
 
@@ -63,12 +64,15 @@ const ChecklistDateTable = ({
               >
                 <BiListUl className="text-xl" />
               </button>
-              <button
-                type="button"
-                className="text-dark-purple bg-slate-200 hover:bg-slate-300  rounded-lg text-sm px-3 py-1.5 text-center mr-2 "
-              >
-                <BiEdit className="text-xl" />
-              </button>
+
+              <Link to={"/checklistdate/update/" + checklist.id}>
+                <button
+                  type="button"
+                  className="text-dark-purple bg-slate-200 hover:bg-slate-300  rounded-lg text-sm px-3 py-1.5 text-center mr-2 "
+                >
+                  <BiEdit className="text-xl" />
+                </button>
+              </Link>
               <button
                 onClick={() => onDeleteChecklist(checklist.id)}
                 type="button"

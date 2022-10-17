@@ -14,6 +14,7 @@ import CheckListDate from "./pages/ChecklistDate/ChecklistDate";
 import AirCreate from "./pages/Air/AirCreate";
 import AirUpdate from "./pages/Air/AirUpdate";
 import ChecklistCreate from "./pages/ChecklistDate/ChecklistDateCreate";
+import ChecklistUpdate from "./pages/ChecklistDate/ChecklistDateUpdate";
 
 import moment from "moment";
 
@@ -42,6 +43,7 @@ function App() {
                 element={<CheckListDate />}
               />
               <Route path="checklistdate/create" element={<ChecklistCreate/> } />
+              <Route path="checklistdate/update/:id" element={<ChecklistUpdate/> } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

@@ -18,10 +18,10 @@ const CheckListDate = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    retrieveChecklists();
-  }, []);
+    retrieveChecklists(id);
+  }, [id]);
 
-  const retrieveChecklists = () => {
+  const retrieveChecklists = (id) => {
     if (id) {
       setIsLoading(true);
       setTimeout(() => {

@@ -21,10 +21,10 @@ const AirUpdate = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    retrieveAirs();
-  }, []);
+    retrieveAirs(id);
+  }, [id]);
 
-  const retrieveAirs = () => {
+  const retrieveAirs = (id) => {
     if (id) {
       setIsLoading(true);
       setTimeout(() => {

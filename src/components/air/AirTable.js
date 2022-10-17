@@ -1,10 +1,20 @@
+import { useRef } from "react";
 import moment from "moment";
 import QRCode from "react-qr-code";
+import downloadjs from "downloadjs";
+import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
 import { BiEdit, BiListUl, BiTrash } from "react-icons/bi";
 
-
 const AirTable = ({ airs, onDeleteAir }) => {
+  const elementRef = useRef(null);
+
+  const handleCaptureClick = async (no) => {
+    const canvas = await html2canvas(elementRef.current);
+    const dataURL = canvas.toDataURL("image/png");
+    downloadjs(dataURL, no, "image/png");
+  };
+
   return (
     <table className="w-full text-sm text-left ">
       <thead className="text-xs text-dark-purple bg-gray-50 ">
@@ -83,7 +93,11 @@ const AirTable = ({ airs, onDeleteAir }) => {
             </td>
 
             <td className="text-sm py-4 px-6">
-              <div className="flex flex-col items-center p-3 bg-slate-200 rounded-lg">
+              <div
+                onClick={() => handleCaptureClick(air.no)}
+                ref={elementRef}
+                className="flex flex-col items-center p-3 bg-slate-200 rounded-lg"
+              >
                 <QRCode
                   value="https://flowbite.com/docs/components/buttons/"
                   size={60}

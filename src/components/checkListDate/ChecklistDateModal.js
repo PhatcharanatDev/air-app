@@ -5,6 +5,7 @@ const ChecklistDateModal = ({ checklist, isModalOpen, onModalChange }) => {
   const handleCancel = () => {
     onModalChange(false);
   };
+
   return (
     <Modal
       title={
